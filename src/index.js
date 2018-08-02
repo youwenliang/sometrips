@@ -5,10 +5,11 @@ import App from './App';
 import { render } from 'react-snapshot';
 import { BrowserRouter } from "react-browser-router";
 import registerServiceWorker from './registerServiceWorker';
+import $ from 'jquery';
 
 render((
 <BrowserRouter basename="sometrips">
-	<App />
+    <App />
 </BrowserRouter>), 
 document.getElementById('root'));
 registerServiceWorker();
