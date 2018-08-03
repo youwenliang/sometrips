@@ -1,128 +1,89 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import {Helmet} from "react-helmet";
 import $ from 'jquery';
-import ColorThief from 'color-thief';
+import loadImage from 'image-promise';
+import { Link } from 'react-router-dom';
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    const { match: { params } } = this.props;
     this.state = {
-      id: params.id
+      data: null
     };
   }
-
   componentDidMount(){
-    
-
-$(document).ready(function(){
-  var sourceImage = new Image();
-  sourceImage.crossOrigin = "Anonymous";
-  var src = $('.demo-img').css('background-image').split('(')[1].split(')')[0];
-  sourceImage.src = src;
-  sourceImage.onload = function(){
-    var colorThief = new ColorThief();
-    var color = colorThief.getColor(sourceImage);
-    var rgb = "rgb("+color[0]+","+color[1]+","+color[2]+")";
-    $('.color-overlay, .circle-overlay, body').css('background', rgb);
-  };
-});
-
-(function() {
-    // Init
-    var container = document.getElementById("container"),
-        inner = document.getElementById("inner");
-
-    // Mouse
-    var mouse = {
-        _x: 0,
-        _y: 0,
-        x: 0,
-        y: 0,
-        updatePosition: function(event) {
-            var e = event || window.event;
-            this.x = e.clientX - this._x;
-            this.y = (e.clientY - this._y) * -1;
-        },
-        setOrigin: function(e) {
-            this._x = e.offsetLeft + Math.floor(e.offsetWidth / 2);
-            this._y = e.offsetTop + Math.floor(e.offsetHeight / 2);
-        },
-        show: function() {
-            return "(" + this.x + ", " + this.y + ")";
+    $(document).scrollTop(0);
+    function setHeight() {
+      var windowHeight = $(window).height(),
+        $block = $('#cover');
+        if(windowHeight > 550) { // 550px is your css min-height for this block
+          $block.css('min-height', windowHeight + 'px') 
+        } else {
+          $block.css('min-height': '') 
         }
-    };
+    }
+    setHeight();
+    $(window).on('resize orientationchange', setHeight);
 
-    // Track the mouse position relative to the center of the container.
-    mouse.setOrigin(container);
+    var images  = [];
+    loadImage(images)
+    .then(function (allImgs) {
+      console.log(allImgs.length, 'images loaded!', allImgs);
+      setTimeout(function(){
 
-    //----------------------------------------------------
-
-    var counter = 0;
-    var refreshRate = 10;
-    var isTimeToUpdate = function() {
-        return counter++ % refreshRate === 0;
-    };
-
-    //----------------------------------------------------
-
-    var onMouseEnterHandler = function(event) {
-        update(event);
-    };
-
-    var onMouseLeaveHandler = function() {
-        inner.style = "";
-    };
-
-    var onMouseMoveHandler = function(event) {
-        if (isTimeToUpdate()) {
-            update(event);
-        }
-    };
-
-    //----------------------------------------------------
-
-    var update = function(event) {
-        mouse.updatePosition(event);
-        updateTransformStyle(
-            (mouse.y / inner.offsetHeight / 5).toFixed(2),
-            (mouse.x / inner.offsetWidth / 5).toFixed(2)
-        );
-    };
-
-    var updateTransformStyle = function(x, y) {
-        var style = "rotateX(" + x + "deg) rotateY(" + y + "deg)";
-        if (!inner.classList.contains('expand')) {
-            inner.style.transform = style;
-            inner.style.webkitTransform = style;
-            inner.style.mozTranform = style;
-            inner.style.msTransform = style;
-            inner.style.oTransform = style;
-        }
-    };
-
-    //--------------------------------------------------------
-
-    container.onmousemove = onMouseMoveHandler;
-    container.onmouseleave = onMouseLeaveHandler;
-    container.onmouseenter = onMouseEnterHandler;
-
-    $('#inner').click(function() {
-        $(this).toggleClass("expand");
-        inner.style = "";
+      },600);
+    })
+    .catch(function (err) {
+      console.error('One or more images have failed to load :(');
+      console.error(err.errored);
+      console.info('But these loaded fine:');
+      console.info(err.loaded);
     });
-    })();
+
+    var request = new XMLHttpRequest();
+    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=85835727dcc382e27ffa1b1a406f9360&user_id=129588168%40N02&format=json&nojsoncallback=1&api_sig=26ecaa59783b3a68d2ce302a3b7b9389');
+    request.setRequestHeader('Accept','application/json');
+
+    var $this = this;
+
+    request.onreadystatechange = function () {
+      if (this.readyState === 4) {
+        var albumData = JSON.parse(this.responseText);
+        $this.setState({data: albumData.photosets.photoset});
+        console.log($this.state.data);
+      }
+    };
+    request.send();
   }
+
+  albumList = () => {
+    if(this.state.data !== null ) {
+    return (<ul className="list pa0 ph2-ns">{this.state.data.map((a, i) => { 
+      var place = a.title._content.split(' Trip')[0];
+      var url = place.replace(/\s+/, "").toLowerCase();
+      return (
+        <li className="dib pa2 ma2 bg-white cp ph4 tc" key={i}>
+          <Link to={"/sometrips/"+url}>{place}</Link>
+        </li>
+      );
+    })}</ul>)
+    }
+  }
+
   render() {
     return (
-      <section>
-        <div id="container">
-          <div id="inner">
-            <div className="color-overlay"></div>
-            <div className="demo-img"></div>
+      <section id="cover" className="min-vh-100 bg-light-gray">
+        <Helmet>
+            <title>Some Trips</title>
+        </Helmet>
+        <nav className="bg-white pv3">
+          <div className="mw8 center ph3">
+            <div className="cf ph2-ns">
+              <p>Sometrips</p>
+            </div>
           </div>
-        </div>
-        <Link to='/sometrips/trip1/'>trip1</Link>
+        </nav>
+        {this.albumList()}
       </section>
     );
   }

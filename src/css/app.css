@@ -1,0 +1,230 @@
+@import "tachyons";
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans');
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif');
+
+body {
+	overflow-x: hidden;
+  font-family: 'Noto Serif', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: #0c0c0d;
+}
+
+img {
+  vertical-align: bottom;
+  pointer-events: none;
+}
+
+.flex {
+  display: flex;
+}
+
+.space-around {
+  justify-content: space-around;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.aic {
+  align-items: center;
+}
+
+.jcc {
+  justify-content: center;
+}
+
+#cover, #timeline {
+	min-height: 550px;
+}
+
+.ds {
+	overflow-y: hidden;
+}
+.z1 {
+  z-index: 1;
+}
+.cp {
+  cursor: pointer;
+}
+.pn {
+  pointer-events: none;
+}
+.w150 {
+  width: 150px;
+}
+.w6 {
+  width: 20rem;
+}
+.w7 {
+  width: 24rem;
+}
+.dragscroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+.card figure {
+  height: 205px;
+}
+
+@media screen and (min-width: 30em) {
+  .card figure {
+    height: 256px;
+  }
+  .w6-ns {
+    width: 20rem;
+  }
+  .w7-ns {
+    width: 24rem;
+  }
+}
+
+.h6 {
+  height: 20rem;
+}
+.h7 {
+  height: 24rem;
+}
+
+#logo {
+  background: url("https://www.youwenliang.com/Codepen/sometrips.svg") center no-repeat;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  opacity: .1;
+}
+
+.preloader-wrap {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0; 
+  bottom: 0;
+  background: #fff;
+  z-index : 2; 
+}
+
+.percentage {
+  z-index: 100;
+  text-align:center;
+  color: #fff;
+  line-height: 30px;
+  font-size : 15px;
+}
+
+.loader {
+  height: 200px;
+  max-width: 200px; 
+  font-weight: 300;
+  position: absolute; 
+  top: 0; 
+  bottom: 0; 
+  left: 0; 
+  right: 0;
+  margin : auto; 
+}
+.loader:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.trackbar {
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  text-align: center;
+  line-height: 30px;
+  overflow: hidden;
+  position: relative;
+  opacity: 0.99;
+  -webkit-mask: url("https://www.youwenliang.com/Codepen/sometrips.svg") center no-repeat;
+  mask: url("https://www.youwenliang.com/Codepen/sometrips.svg") center no-repeat;
+}
+
+.loadbar {
+  width: 0%;
+  height: 100%;
+  background-color: #1D1922;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+* {
+   user-select: none;
+}
+
+
+/*
+
+    OVERFLOW
+
+ */
+.overflow-visible { overflow: visible; }
+.overflow-hidden { overflow: hidden; }
+.overflow-scroll { overflow: scroll; }
+.overflow-auto { overflow: auto; }
+.overflow-x-visible { overflow-x: visible; }
+.overflow-x-hidden { overflow-x: hidden; }
+.overflow-x-scroll { overflow-x: scroll; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-y-visible { overflow-y: visible; }
+.overflow-y-hidden { overflow-y: hidden; }
+.overflow-y-scroll { overflow-y: scroll; }
+.overflow-y-auto { overflow-y: auto; }
+@media screen and (min-width: 30em) {
+ .overflow-visible-ns { overflow: visible; }
+ .overflow-hidden-ns { overflow: hidden; }
+ .overflow-scroll-ns { overflow: scroll; }
+ .overflow-auto-ns { overflow: auto; }
+ .overflow-x-visible-ns { overflow-x: visible; }
+ .overflow-x-hidden-ns { overflow-x: hidden; }
+ .overflow-x-scroll-ns { overflow-x: scroll; }
+ .overflow-x-auto-ns { overflow-x: auto; }
+ .overflow-y-visible-ns { overflow-y: visible; }
+ .overflow-y-hidden-ns { overflow-y: hidden; }
+ .overflow-y-scroll-ns { overflow-y: scroll; }
+ .overflow-y-auto-ns { overflow-y: auto; }
+}
+@media screen and (min-width: 30em) and (max-width: 60em) {
+ .overflow-visible-m { overflow: visible; }
+ .overflow-hidden-m { overflow: hidden; }
+ .overflow-scroll-m { overflow: scroll; }
+ .overflow-auto-m { overflow: auto; }
+ .overflow-x-visible-m { overflow-x: visible; }
+ .overflow-x-hidden-m { overflow-x: hidden; }
+ .overflow-x-scroll-m { overflow-x: scroll; }
+ .overflow-x-auto-m { overflow-x: auto; }
+ .overflow-y-visible-m { overflow-y: visible; }
+ .overflow-y-hidden-m { overflow-y: hidden; }
+ .overflow-y-scroll-m { overflow-y: scroll; }
+ .overflow-y-auto-m { overflow-y: auto; }
+}
+@media screen and (min-width: 60em) {
+ .overflow-visible-l { overflow: visible; }
+ .overflow-hidden-l { overflow: hidden; }
+ .overflow-scroll-l { overflow: scroll; }
+ .overflow-auto-l { overflow: auto; }
+ .overflow-x-visible-l { overflow-x: visible; }
+ .overflow-x-hidden-l { overflow-x: hidden; }
+ .overflow-x-scroll-l { overflow-x: scroll; }
+ .overflow-x-auto-l { overflow-x: auto; }
+ .overflow-y-visible-l { overflow-y: visible; }
+ .overflow-y-hidden-l { overflow-y: hidden; }
+ .overflow-y-scroll-l { overflow-y: scroll; }
+ .overflow-y-auto-l { overflow-y: auto; }
+}

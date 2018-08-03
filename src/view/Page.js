@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import {Helmet} from "react-helmet";
+import loadImage from 'image-promise';
+import $ from 'jquery';
+// import mousewheel from 'jquery-mousewheel';
+// import {TweenMax} from "gsap/all";
+
 
 class Page extends Component {
   constructor(props) {
@@ -11,13 +16,29 @@ class Page extends Component {
   }
 
   componentDidMount(){
-    
+    var images  = [];
+    loadImage(images)
+    .then(function (allImgs) {
+      console.log(allImgs.length, 'images loaded!', allImgs);
+      setTimeout(function(){
+        
+      },600);
+    })
+    .catch(function (err) {
+      console.error('One or more images have failed to load :(');
+      console.error(err.errored);
+      console.info('But these loaded fine:');
+      console.info(err.loaded);
+    });
   }
   render() {
     return (
-      <section>
-        {this.state.id}
-        <Link to='/sometrips/'>home</Link>
+      <section className="bg-near-white pv6-l pv4">
+        <div className="mw8 center ph3">
+          <div className="cf ph2-ns">
+            <p>Page</p>
+          </div>
+        </div>
       </section>
     );
   }
