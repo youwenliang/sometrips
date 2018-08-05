@@ -8,7 +8,8 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null
+      data: null,
+      current: "01"
     };
   }
   componentDidMount(){
@@ -41,7 +42,7 @@ class Home extends Component {
     });
 
     var request = new XMLHttpRequest();
-    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=85835727dcc382e27ffa1b1a406f9360&user_id=129588168%40N02&format=json&nojsoncallback=1&api_sig=26ecaa59783b3a68d2ce302a3b7b9389');
+    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=b5915b4e4a36d456caa767bdb9003cbc&user_id=129588168%40N02&format=json&nojsoncallback=1');
     request.setRequestHeader('Accept','application/json');
 
     var $this = this;
@@ -50,7 +51,6 @@ class Home extends Component {
       if (this.readyState === 4) {
         var albumData = JSON.parse(this.responseText);
         $this.setState({data: albumData.photosets.photoset});
-        console.log($this.state.data);
       }
     };
     request.send();
@@ -63,7 +63,7 @@ class Home extends Component {
       var url = place.replace(/\s+/, "").toLowerCase();
       return (
         <li className="dib pa2 ma2 bg-white cp ph4 tc" key={i}>
-          <Link to={"/sometrips/"+url}>{place}</Link>
+          <Link to={{pathname:"/sometrips/"+(i+1)+"/"+url}}>{place}</Link>
         </li>
       );
     })}</ul>)
@@ -71,19 +71,40 @@ class Home extends Component {
   }
 
   render() {
+    let total = 0;
+    if(this.state.data !== null) {
+      total = this.state.data.length;
+    }
     return (
-      <section id="cover" className="min-vh-100 bg-light-gray">
+      <section id="cover" className="min-vh-100">
         <Helmet>
             <title>Some Trips</title>
         </Helmet>
-        <nav className="bg-white pv3">
-          <div className="mw8 center ph3">
-            <div className="cf ph2-ns">
-              <p>Sometrips</p>
+        <nav className="pt3">
+          <div className="mw1280 center ph3">
+            <div className="flex ph2-ns space-between aic">
+              <img src='/images/sometrips.svg' width='150' height='150' alt="some trips" />
+              <div className="flex space-between aic ph2-ns">
+                <p className="f4 fw5 ph4 cp" id="about">About</p>
+                <i className="f2 material-icons db-ns dn cp">notes</i>
+              </div>
             </div>
           </div>
         </nav>
-        {this.albumList()}
+        <div id="album" className="bg-light-gray">
+         {this.albumList()}
+        </div>
+        <div className="mw8 center ph3 flex aic space-between pv4">
+          <div className="ph3 db-ns dn">
+            <p className="mv2 f5 fw7 dark">Discover the world</p>
+            <p className="mv2 f6 fw5 muted">Scroll for more trips</p>
+          </div>
+          <div className="ph3 f3 fw7">
+            <span id="number">{this.state.current}</span>
+            <hr className="relative top5 w3 b--black mh3 dib"/>
+            <span id="total">{total}</span>
+          </div>
+        </div>
       </section>
     );
   }
