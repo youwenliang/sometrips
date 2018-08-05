@@ -9,7 +9,7 @@ body {
 }
 
 #album {
-  min-height: 300px;
+  min-height: 360px;
   height: 60vh;
 }
 
@@ -23,6 +23,11 @@ body {
 
 .top5 {
   top: 5px;
+}
+
+.absolute-center {
+  left: 0;
+  right: 0;
 }
 
 .mw1280 {
@@ -87,6 +92,9 @@ img {
 .dragscroll {
   -webkit-overflow-scrolling: touch;
 }
+.mt6rem {
+  margin-top: 6rem;
+}
 
 .card figure {
   height: 205px;
@@ -109,6 +117,14 @@ img {
 }
 .h7 {
   height: 24rem;
+}
+
+.photosets {
+  margin-left: 30%
+}
+
+.photoset:nth-child(1) {
+  margin-left: 0px !important;
 }
 
 #logo {

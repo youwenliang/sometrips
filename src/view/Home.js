@@ -3,17 +3,27 @@ import {Helmet} from "react-helmet";
 import $ from 'jquery';
 import loadImage from 'image-promise';
 import { Link } from 'react-router-dom';
+import mousewheel from 'jquery-mousewheel'; // eslint-disable-line no-unused-vars
+import dragscroll from 'dragscroll'; // eslint-disable-line no-unused-vars
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
-      current: "01"
+      current: 1
     };
   }
   componentDidMount(){
     $(document).scrollTop(0);
+    $('.photosets').scrollLeft(0);
+
+    // Horizontal Scroll
+    $('.photosets').mousewheel(function(event, change) {
+      this.scrollLeft -= (change * 1); //need a value to speed up the change
+      event.preventDefault();
+    });
+
     function setHeight() {
       var windowHeight = $(window).height(),
         $block = $('#cover');
@@ -51,6 +61,7 @@ class Home extends Component {
       if (this.readyState === 4) {
         var albumData = JSON.parse(this.responseText);
         $this.setState({data: albumData.photosets.photoset});
+        console.log($this.state.data);
       }
     };
     request.send();
@@ -58,22 +69,38 @@ class Home extends Component {
 
   albumList = () => {
     if(this.state.data !== null ) {
-    return (<ul className="list pa0 ph2-ns">{this.state.data.map((a, i) => { 
-      var place = a.title._content.split(' Trip')[0];
-      var url = place.replace(/\s+/, "").toLowerCase();
-      return (
-        <li className="dib pa2 ma2 bg-white cp ph4 tc" key={i}>
-          <Link to={{pathname:"/sometrips/"+(i+1)+"/"+url}}>{place}</Link>
-        </li>
-      );
-    })}</ul>)
+      return (<ul className="photosets list ph0 pv3 mv0 nowrap overflow-x-scroll h-100">{this.state.data.map((a, i) => { 
+        var place = a.title._content.split(' Trip')[0];
+        var url = place.replace(/\s+/, "").toLowerCase();
+        var data = this.state.data[i];
+        var cover_url = "https://farm"+data.farm+".staticflickr.com/"+data.server+"/"+data.primary+"_"+data.secret+"_h.jpg";
+        var bgStyle = {
+          "backgroundImage": "url('"+cover_url+"')",
+          "backgroundSize": "cover",
+          "top": 0,
+          "left": 0,
+          "opacity": .75
+        }
+        return (
+          <li className="photoset dib pa2 mh2 bg-white cp ph4 tc h-100 w-75 relative" key={i}>
+            <Link to={{pathname:"/sometrips/"+(i+1)+"/"+url}}>
+              <div className="absolute w-100 h-100" style={bgStyle}></div>
+            </Link>
+            <div className="flex aic w-100 h-100 jcc relative z1 white f1 pn o-0">{place}</div>
+          </li>
+        );
+      })}</ul>)
     }
   }
 
   render() {
     let total = 0;
+    let year = 0;
+    let place = "";
     if(this.state.data !== null) {
       total = this.state.data.length;
+      year = this.state.data[this.state.current-1].title._content.split('Trip ')[1];
+      place = this.state.data[this.state.current-1].title._content.split('Trip ')[0];
     }
     return (
       <section id="cover" className="min-vh-100">
@@ -91,16 +118,20 @@ class Home extends Component {
             </div>
           </div>
         </nav>
-        <div id="album" className="bg-light-gray">
+        <div id="album" className="relative">
+          <div className="mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center pn z1">
+            <div className="flex ph2 mt6rem"><span className="f3 fw5">{year}</span><hr className="relative top5 w3 b--black mh3 dib"/></div>
+            <h1 className="f-headline lh-solid">{place}</h1>
+          </div>
          {this.albumList()}
         </div>
-        <div className="mw8 center ph3 flex aic space-between pv4">
+        <div className="mw8 center ph5-ns ph3 flex aic space-between pv4">
           <div className="ph3 db-ns dn">
             <p className="mv2 f5 fw7 dark">Discover the world</p>
             <p className="mv2 f6 fw5 muted">Scroll for more trips</p>
           </div>
           <div className="ph3 f3 fw7">
-            <span id="number">{this.state.current}</span>
+            <span id="number">{('0'+this.state.current).slice(-2)}</span>
             <hr className="relative top5 w3 b--black mh3 dib"/>
             <span id="total">{total}</span>
           </div>
