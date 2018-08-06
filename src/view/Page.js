@@ -20,7 +20,7 @@ class Page extends Component {
   }
 
   componentDidMount(){
-
+    $(document).scrollTop(0);
     function setHeight() {
       var windowHeight = $(window).height(),
         $block = $('#page-cover');
@@ -81,6 +81,13 @@ class Page extends Component {
     }
     return (
       <section className="bg-near-black">
+        <nav className="pt3 absolute z1 w-100">
+          <div className="mw1280 center ph3">
+            <div className="flex ph2-ns aic">
+              <img src='/images/sometrips-white.svg' width='150' height='150' alt="some trips" />
+            </div>
+          </div>
+        </nav>
         <div id="page-cover" className="tc flex jcc aic relative">
           <div className="absolute w-100 h-100" style={bgStyle}></div>
           <div className="mw8 center ph3 pv6-l pv4 white z1">
@@ -91,8 +98,8 @@ class Page extends Component {
             </div>
           </div>
         </div>
-        <div id="page-content" className="bg-white pv4">
-          <nav className="pt3">
+        <div id="page-content" className="bg-white pt4">
+          <nav className="pt3 h3">
             <div className="mw1280 center ph3">
               <div className="flex ph2-ns flex-end aic">
                 <Link to="/sometrips">
@@ -104,9 +111,26 @@ class Page extends Component {
               </div>
             </div>
           </nav>
-          <div className="mw8 center ph3 pv4">
+          <div className="mw1280 center pl5-l ph3 pt4">
             <div className="cf ph2-ns">
-              <h2>{title}</h2>
+              <div className="fl w-100 w-third-l">
+                <h2 className="fw7 dark">{title}</h2>
+                <h3 className="fw5 muted">2015.04.15 - 04.24</h3>
+                <hr className="o-10 mv4"/>
+                <p className="lh-copy">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolor
+                </p>
+                <div className="flex mv4">
+                  <div className="button flex jcc aic mh2 cp" id="link">
+                    <i className="material-icons flip">link</i>
+                  </div>
+                  <div className="button flex jcc aic mh2 cp" id="share">
+                    <i className="material-icons">share</i>
+                  </div>
+                </div>
+              </div>
+              <div className="fl w-100 w-two-thirds-l pt3 pl5-l ph0">
+                <div className="photoList bg-near-white w-100 pb6"></div>
+              </div>
             </div>
           </div>
         </div>

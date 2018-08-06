@@ -10,6 +10,7 @@ class App extends Component {
     perfData = window.performance.timing, // The PerformanceTiming interface represents timing-related performance information for the given page.
     EstimatedTime = -(perfData.loadEventEnd - perfData.navigationStart),
     time = parseInt((EstimatedTime/1000)%60)*100;
+    document.body.classList.add('ds');
 
 	$(".loadbar").animate({
 	  width: width + "%"
@@ -17,6 +18,7 @@ class App extends Component {
 
 	setTimeout(function(){
 	  $('.preloader-wrap').fadeOut(300);
+    document.body.classList.remove('ds');
 	}, time);
   }
   render() {

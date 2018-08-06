@@ -71,6 +71,9 @@ img {
 #cover, #page-cover {
 	min-height: 550px;
 }
+.photoList {
+  height: calc(100vh - 9rem);
+}
 
 .ds {
 	overflow-y: hidden;
