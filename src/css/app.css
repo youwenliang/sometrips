@@ -64,7 +64,11 @@ img {
   justify-content: center;
 }
 
-#cover, #timeline {
+.flex-end {
+  justify-content: flex-end;
+}
+
+#cover, #page-cover {
 	min-height: 550px;
 }
 

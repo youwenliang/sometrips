@@ -99,8 +99,8 @@ class Home extends Component {
     let place = "";
     if(this.state.data !== null) {
       total = this.state.data.length;
-      year = this.state.data[this.state.current-1].title._content.split('Trip ')[1];
-      place = this.state.data[this.state.current-1].title._content.split('Trip ')[0];
+      year = this.state.data[this.state.current-1].title._content.split(' Trip ')[1];
+      place = this.state.data[this.state.current-1].title._content.split(' Trip ')[0];
     }
     return (
       <section id="cover" className="min-vh-100">
