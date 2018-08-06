@@ -92,12 +92,24 @@ img {
 .dragscroll {
   -webkit-overflow-scrolling: touch;
 }
-.mt6rem {
-  margin-top: 6rem;
-}
 
 .card figure {
   height: 205px;
+}
+
+.button {
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  background-color: #f3f3f3;
+}
+
+.flip {
+  transform: scaleX(-1);
+}
+
+.button:nth-child(1) {
+  margin-left: 0;
 }
 
 @media screen and (min-width: 30em) {

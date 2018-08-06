@@ -11,7 +11,7 @@ class Home extends Component {
     super(props);
     this.state = {
       data: null,
-      current: 1
+      current: 17
     };
   }
   componentDidMount(){
@@ -119,9 +119,19 @@ class Home extends Component {
           </div>
         </nav>
         <div id="album" className="relative">
-          <div className="mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center pn z1">
-            <div className="flex ph2 mt6rem"><span className="f3 fw5">{year}</span><hr className="relative top5 w3 b--black mh3 dib"/></div>
-            <h1 className="f-headline lh-solid">{place}</h1>
+          <div className="flex aic mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center z1">
+            <div>
+              <div className="flex ph2"><span className="f3 fw5">{year}</span><hr className="relative top5 w3 b--black mh3 dib"/></div>
+              <h1 className="f-headline lh-solid">{place}</h1>
+              <div className="flex">
+                <div className="button flex jcc aic mh2 cp" id="prev">
+                  <i className="material-icons flip">arrow_right_alt</i>
+                </div>
+                <div className="button flex jcc aic mh2 cp" id="next">
+                  <i className="material-icons">arrow_right_alt</i>
+                </div>
+              </div>
+            </div>
           </div>
          {this.albumList()}
         </div>
