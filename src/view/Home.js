@@ -82,7 +82,7 @@ class Home extends Component {
           "opacity": .75
         }
         return (
-          <li className="photoset dib pa2 mh2 bg-white cp ph4 tc h-100 w-75 relative" key={i}>
+          <li className="photoset dib pa2 mh4 bg-white cp ph4 tc h-100 w-75 relative" key={i}>
             <Link to={{pathname:"/sometrips/"+(i+1)+"/"+url}}>
               <div className="absolute w-100 h-100" style={bgStyle}></div>
             </Link>

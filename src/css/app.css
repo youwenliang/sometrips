@@ -119,6 +119,14 @@ img {
   margin-left: 0;
 }
 
+.photosets {
+  margin-left: 0;
+}
+
+.photosets li {
+  width: 100%;
+}
+
 @media screen and (min-width: 30em) {
   .card figure {
     height: 256px;
@@ -129,6 +137,12 @@ img {
   .w7-ns {
     width: 24rem;
   }
+  .photosets {
+    margin-left: calc(50vw - 200px);
+  }
+  .photosets li {
+    width: 75%;
+  }
 }
 
 .h6 {
@@ -138,9 +152,7 @@ img {
   height: 24rem;
 }
 
-.photosets {
-  margin-left: 30%
-}
+
 
 .photoset:nth-child(1) {
   margin-left: 0px !important;
