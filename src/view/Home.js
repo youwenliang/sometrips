@@ -5,14 +5,17 @@ import loadImage from 'image-promise';
 import { Link } from 'react-router-dom';
 import mousewheel from 'jquery-mousewheel'; // eslint-disable-line no-unused-vars
 import dragscroll from 'dragscroll'; // eslint-disable-line no-unused-vars
+import About from './About'
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
-      current: 17
+      current: 17,
+      about: false
     };
+    this.handler = this.handler.bind(this)
   }
   componentDidMount(){
     $(document).scrollTop(0);
@@ -93,6 +96,15 @@ class Home extends Component {
     }
   }
 
+  handler(e) {
+    e.preventDefault()
+    this.setState({about: false});
+  }
+
+  openAbout = () => {
+    this.setState({about: true});
+  }
+
   render() {
     let total = 0;
     let year = 0;
@@ -112,7 +124,7 @@ class Home extends Component {
             <div className="flex ph2-ns space-between aic">
               <img src='/images/sometrips.svg' width='150' height='150' alt="some trips" />
               <div className="flex space-between aic ph2-ns">
-                <p className="f4 fw5 ph4 cp" id="about">About</p>
+                <p className="f4 fw5 ph4 cp" onClick={this.openAbout.bind(this)}>About</p>
                 <i className="f2 material-icons db-ns dn cp">notes</i>
               </div>
             </div>
@@ -146,6 +158,7 @@ class Home extends Component {
             <span id="total">{total}</span>
           </div>
         </div>
+        <About display={this.state.about} handler={this.handler}/>
       </section>
     );
   }

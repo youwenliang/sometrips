@@ -8,9 +8,13 @@ body {
   color: #0C0C0D;
 }
 
-#album {
+#album, #about-content {
   min-height: 360px;
   height: 60vh;
+}
+
+#about {
+  background: #fdfdfc;
 }
 
 .dark {
@@ -28,6 +32,15 @@ body {
 .absolute-center {
   left: 0;
   right: 0;
+}
+
+.top-left {
+  top: 0;
+  left: 0;
+}
+
+.h-150 {
+  height: 150px;
 }
 
 .mw1280 {
