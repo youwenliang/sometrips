@@ -114,10 +114,10 @@ class Page extends Component {
           <div className="mw1280 center pl5-l ph3 pt4">
             <div className="cf ph2-ns">
               <div className="fl w-100 w-third-l">
-                <h2 className="fw7 dark">{title}</h2>
+                <h2 className="fw7">{title}</h2>
                 <h3 className="fw5 muted">2015.04.15 - 04.24</h3>
                 <hr className="o-10 mv4"/>
-                <p className="lh-copy">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolor
+                <p className="lh-copy dark">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolor
                 </p>
                 <div className="flex mv4">
                   <div className="button flex jcc aic mh2 cp" id="link">

@@ -3,8 +3,7 @@ import {Helmet} from "react-helmet";
 import $ from 'jquery';
 import loadImage from 'image-promise';
 import { Link } from 'react-router-dom';
-import mousewheel from 'jquery-mousewheel'; // eslint-disable-line no-unused-vars
-import dragscroll from 'dragscroll'; // eslint-disable-line no-unused-vars
+import FontAwesome from 'react-fontawesome';
 
 class About extends Component {
   constructor(props) {
@@ -36,10 +35,10 @@ class About extends Component {
                 <p className="lh-copy dark">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolor </p>
                 <div className="flex mv4">
                   <div className="button flex jcc aic mh2 cp" id="link">
-                    <i className="material-icons flip">link</i>
+                    <FontAwesome name='github' className="f3" />
                   </div>
                   <div className="button flex jcc aic mh2 cp" id="share">
-                    <i className="material-icons">share</i>
+                    <FontAwesome name='instagram' className="f3" />
                   </div>
                 </div>
               </div>
