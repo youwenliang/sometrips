@@ -5,14 +5,15 @@ import loadImage from 'image-promise';
 import { Link } from 'react-router-dom';
 import mousewheel from 'jquery-mousewheel'; // eslint-disable-line no-unused-vars
 import dragscroll from 'dragscroll'; // eslint-disable-line no-unused-vars
-import About from './About'
+import About from './About';
+import Swiper from 'swiper';
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
-      current: 17,
+      current: 1,
       about: false
     };
     this.handler = this.handler.bind(this)
@@ -38,13 +39,37 @@ class Home extends Component {
     }
     setHeight();
     $(window).on('resize orientationchange', setHeight);
-
+    var $this = this;
     var images  = [];
     loadImage(images)
     .then(function (allImgs) {
       console.log(allImgs.length, 'images loaded!', allImgs);
       setTimeout(function(){
-
+        if($('.swiper-container').length !== 0) {
+          var mySwiper = new Swiper('.swiper-container', {
+              speed: 400,
+              spaceBetween: 100,
+              loop: true,
+              navigation: {
+                nextEl: '#next',
+                prevEl: '#prev',
+              }
+          });
+          $('#prev').click(function(){
+            mySwiper.slidePrev();
+            var i = mySwiper.activeIndex;
+            if(i === 0) i = $this.state.data.length;
+            if(i === $this.state.data.length + 1) i = 1;
+            $this.setState({current: i});
+          })
+          $('#next').click(function(){
+            mySwiper.slideNext();
+            var i = mySwiper.activeIndex;
+            if(i === 0) i = $this.state.data.length;
+            if(i === $this.state.data.length + 1) i = 1;
+            $this.setState({current: i});
+          })
+        }
       },600);
     })
     .catch(function (err) {
@@ -72,7 +97,7 @@ class Home extends Component {
 
   albumList = () => {
     if(this.state.data !== null ) {
-      return (<ul className="photosets list ph0 pv3 mv0 nowrap overflow-x-scroll h-100">{this.state.data.map((a, i) => { 
+      return (<div className="swiper-container h-100 z-1 photosets"><div className="swiper-wrapper h-100">{this.state.data.map((a, i) => { 
         var place = a.title._content.split(' Trip')[0];
         var url = place.replace(/\s+/, "").toLowerCase();
         var data = this.state.data[i];
@@ -80,19 +105,20 @@ class Home extends Component {
         var bgStyle = {
           "backgroundImage": "url('"+cover_url+"')",
           "backgroundSize": "cover",
+          "backgroundPosition": "center center",
           "top": 0,
           "left": 0,
           "opacity": .75
         }
         return (
-          <li className="photoset dib pa2 mh4 bg-white cp ph4 tc h-100 w-75 relative" key={i}>
+          <div className="swiper-slide" key={i}>
             <Link to={{pathname:"/sometrips/"+(i+1)+"/"+url}}>
               <div className="absolute w-100 h-100" style={bgStyle}></div>
             </Link>
             <div className="flex aic w-100 h-100 jcc relative z1 white f1 pn o-0">{place}</div>
-          </li>
+          </div>
         );
-      })}</ul>)
+      })}</div></div>)
     }
   }
 
@@ -134,18 +160,20 @@ class Home extends Component {
           <div className="flex aic mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center z1">
             <div>
               <div className="flex ph2"><span className="f3 fw5">{year}</span><hr className="relative top5 w3 b--black mh3 dib"/></div>
-              <h1 className="f-headline lh-solid">{place}</h1>
+              <Link to={{pathname:"/sometrips/"+(this.state.current)+"/"+place}}>
+                <h1 className="f-headline lh-solid">{place}</h1>
+              </Link>
               <div className="flex">
-                <div className="button flex jcc aic mh2 cp" id="prev">
+                <div className="button flex jcc aic mh2 cp z4" id="prev">
                   <i className="material-icons flip">arrow_right_alt</i>
                 </div>
-                <div className="button flex jcc aic mh2 cp" id="next">
+                <div className="button flex jcc aic mh2 cp z4" id="next">
                   <i className="material-icons">arrow_right_alt</i>
                 </div>
               </div>
             </div>
           </div>
-         {this.albumList()}
+          {this.albumList()}
         </div>
         <div className="mw8 center ph5-ns ph3 flex aic space-between pv4">
           <div className="ph3 db-ns dn">
