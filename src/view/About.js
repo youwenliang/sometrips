@@ -1,17 +1,7 @@
 import React, { Component } from 'react';
-import {Helmet} from "react-helmet";
-import $ from 'jquery';
-import loadImage from 'image-promise';
-import { Link } from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
 
 class About extends Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount(){
-   
-  }
   render() {
     let display = "";
     if(!this.props.display) display = " dn";

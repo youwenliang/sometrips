@@ -45,31 +45,53 @@ class Home extends Component {
     .then(function (allImgs) {
       console.log(allImgs.length, 'images loaded!', allImgs);
       setTimeout(function(){
-        if($('.swiper-container').length !== 0) {
-          var mySwiper = new Swiper('.swiper-container', {
-              speed: 400,
-              spaceBetween: 100,
-              loop: true,
-              navigation: {
-                nextEl: '#next',
-                prevEl: '#prev',
-              }
-          });
-          $('#prev').click(function(){
-            mySwiper.slidePrev();
-            var i = mySwiper.activeIndex;
-            if(i === 0) i = $this.state.data.length;
-            if(i === $this.state.data.length + 1) i = 1;
-            $this.setState({current: i});
-          })
-          $('#next').click(function(){
-            mySwiper.slideNext();
-            var i = mySwiper.activeIndex;
-            if(i === 0) i = $this.state.data.length;
-            if(i === $this.state.data.length + 1) i = 1;
-            $this.setState({current: i});
-          })
-        }
+        $(document).ready(function(){
+        // var flag = false;
+        var mySwiper = new Swiper('.swiper-container', {
+            speed: 400,
+            spaceBetween: 50,
+            slidesPerView: 'auto',
+            loop: true,
+            navigation: {
+              nextEl: '#next',
+              prevEl: '#prev',
+            }
+        });
+        $('#prev').click(function(){
+          mySwiper.slidePrev();
+          var i = mySwiper.activeIndex%18 + 1;
+          $this.setState({current: i});
+        })
+        $('#next').click(function(){
+          mySwiper.slideNext();
+          var i = mySwiper.activeIndex%18 + 1;
+          $this.setState({current: i});
+        })
+        // $(window).mousewheel(function(event) {
+        //   if(!flag) {
+        //       if (event.originalEvent.wheelDelta >= 0) {
+        //           mySwiper.slidePrev();
+        //           var i = mySwiper.activeIndex;
+        //           if(i === 0) i = $this.state.data.length;
+        //           if(i === $this.state.data.length + 1) i = 1;
+        //           $this.setState({current: i});
+        //           flag = true;
+        //       }
+        //       else {
+        //           mySwiper.slideNext();
+        //           var i = mySwiper.activeIndex;
+        //           if(i === 0) i = $this.state.data.length;
+        //           if(i === $this.state.data.length + 1) i = 1;
+        //           $this.setState({current: i});
+        //           flag = true;
+        //       }
+        //   }
+        //   clearTimeout($.data(this, 'timer'));
+        //     $.data(this, 'timer', setTimeout(function() {
+        //        flag = false;
+        //   }, 50));
+        // });
+        });
       },600);
     })
     .catch(function (err) {
@@ -82,8 +104,6 @@ class Home extends Component {
     var request = new XMLHttpRequest();
     request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=b5915b4e4a36d456caa767bdb9003cbc&user_id=129588168%40N02&format=json&nojsoncallback=1');
     request.setRequestHeader('Accept','application/json');
-
-    var $this = this;
 
     request.onreadystatechange = function () {
       if (this.readyState === 4) {
@@ -111,7 +131,7 @@ class Home extends Component {
           "opacity": .75
         }
         return (
-          <div className="swiper-slide" key={i}>
+          <div className="swiper-slide w-70-ns w-100" key={i}>
             <Link to={{pathname:"/sometrips/"+(i+1)+"/"+url}}>
               <div className="absolute w-100 h-100" style={bgStyle}></div>
             </Link>
@@ -193,3 +213,5 @@ class Home extends Component {
 }
 
 export default Home;
+
+

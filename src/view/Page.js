@@ -81,6 +81,9 @@ class Page extends Component {
     }
     return (
       <section className="bg-near-black">
+        <Helmet>
+            <title>{this.state.id}</title>
+        </Helmet>
         <nav className="pt3 absolute z1 w-100">
           <div className="mw1280 center ph3">
             <div className="flex ph2-ns aic">
