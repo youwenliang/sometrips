@@ -6,7 +6,7 @@ class About extends Component {
     let display = "";
     if(!this.props.display) display = " dn";
     return (
-      <section id="about" className={"min-vh-100 absolute top-left w-100 z1" + display}>
+      <section id="about" className={"min-vh-100 absolute top-left w-100 z10" + display}>
         <nav className="pt3">
           <div className="mw1280 center ph3">
             <div className="flex ph2-ns flex-end aic">
@@ -18,7 +18,7 @@ class About extends Component {
           </div>
         </nav>
         <div id="about-content" className="relative">
-          <div className="flex aic mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center z1">
+          <div className="flex aic mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center z10">
             <div className="cf ph2-ns">
               <div className="fl w-100 w-50-l ph2">
                 <h2 className="fw7 f2 mt0">About Sometrips</h2>

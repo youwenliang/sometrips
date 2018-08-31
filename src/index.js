@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from "react-browser-router";
 import registerServiceWorker from './registerServiceWorker';
-// import $ from 'jquery';
+import $ from 'jquery';
 // import {TweenMax} from "gsap/all";
 import ScrollMagic from 'scrollmagic'; // eslint-disable-line no-unused-vars
 
@@ -15,3 +15,6 @@ render((
 document.getElementById('root'));
 registerServiceWorker();
 
+$(window).click(function(e){
+	console.log(e.target);
+})

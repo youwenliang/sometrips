@@ -87,7 +87,9 @@ class Page extends Component {
         <nav className="pt3 absolute z1 w-100">
           <div className="mw1280 center ph3">
             <div className="flex ph2-ns aic">
+              <Link to="/sometrips">
               <img src='/images/sometrips-white.svg' width='150' height='150' alt="some trips" />
+              </Link>
             </div>
           </div>
         </nav>

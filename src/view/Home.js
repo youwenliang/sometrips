@@ -47,26 +47,28 @@ class Home extends Component {
       setTimeout(function(){
         $(document).ready(function(){
         // var flag = false;
-        var mySwiper = new Swiper('.swiper-container', {
-            speed: 400,
-            spaceBetween: 50,
-            slidesPerView: 'auto',
-            loop: true,
-            navigation: {
-              nextEl: '#next',
-              prevEl: '#prev',
-            }
-        });
-        $('#prev').click(function(){
-          mySwiper.slidePrev();
-          var i = mySwiper.activeIndex%18 + 1;
-          $this.setState({current: i});
-        })
-        $('#next').click(function(){
-          mySwiper.slideNext();
-          var i = mySwiper.activeIndex%18 + 1;
-          $this.setState({current: i});
-        })
+        if($('.swiper-container').length !== 0) {
+          var mySwiper = new Swiper('.swiper-container', {
+              speed: 400,
+              spaceBetween: 50,
+              slidesPerView: 'auto',
+              loop: true,
+              navigation: {
+                nextEl: '#next',
+                prevEl: '#prev',
+              }
+          });
+          $('#prev').click(function(){
+            mySwiper.slidePrev();
+            var i = mySwiper.activeIndex%18 + 1;
+            $this.setState({current: i});
+          })
+          $('#next').click(function(){
+            mySwiper.slideNext();
+            var i = mySwiper.activeIndex%18 + 1;
+            $this.setState({current: i});
+          })
+        }
         // $(window).mousewheel(function(event) {
         //   if(!flag) {
         //       if (event.originalEvent.wheelDelta >= 0) {
@@ -117,7 +119,7 @@ class Home extends Component {
 
   albumList = () => {
     if(this.state.data !== null ) {
-      return (<div className="swiper-container h-100 z-1 photosets"><div className="swiper-wrapper h-100">{this.state.data.map((a, i) => { 
+      return (<div className="swiper-container h-100 z2 photosets"><div className="swiper-wrapper h-100">{this.state.data.map((a, i) => { 
         var place = a.title._content.split(' Trip')[0];
         var url = place.replace(/\s+/, "").toLowerCase();
         var data = this.state.data[i];
@@ -177,8 +179,8 @@ class Home extends Component {
           </div>
         </nav>
         <div id="album" className="relative">
-          <div className="flex aic mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center z1">
-            <div>
+          <div className="flex aic mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center z4 pn">
+            <div className="auto">
               <div className="flex ph2"><span className="f3 fw5">{year}</span><hr className="relative top5 w3 b--black mh3 dib"/></div>
               <Link to={{pathname:"/sometrips/"+(this.state.current)+"/"+place}}>
                 <h1 className="f-headline lh-solid">{place}</h1>
