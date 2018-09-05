@@ -54,7 +54,6 @@ class Home extends Component {
               spaceBetween: 50,
               slidesPerView: 'auto',
               simulateTouch: false,
-              loop: true,
               navigation: {
                 nextEl: '#next',
                 prevEl: '#prev',
