@@ -17,9 +17,7 @@ class Main extends Component {
     return (
       <main>
         <Switch>
-          <Route path='/sometrips/:number/:id/' 
-            render={(props) => <Page {...props} />}
-          />
+          <Route path='/sometrips/:number/:id/' component={Page} />
           <Route exact path='/sometrips' component={Home} />
         </Switch>
       </main>

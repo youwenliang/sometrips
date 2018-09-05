@@ -3,6 +3,7 @@ import {Helmet} from "react-helmet";
 import loadImage from 'image-promise';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
+import logo from '../images/sometrips-white.svg';
 // import mousewheel from 'jquery-mousewheel';
 // import {TweenMax} from "gsap/all";
 
@@ -88,7 +89,7 @@ class Page extends Component {
           <div className="mw1280 center ph3">
             <div className="flex ph2-ns aic">
               <Link to="/sometrips">
-              <img src='/images/sometrips-white.svg' width='150' height='150' alt="some trips" />
+              <img src={logo} width='150' height='150' alt="some trips" />
               </Link>
             </div>
           </div>

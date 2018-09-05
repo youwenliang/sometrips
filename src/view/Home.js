@@ -7,6 +7,7 @@ import mousewheel from 'jquery-mousewheel'; // eslint-disable-line no-unused-var
 import dragscroll from 'dragscroll'; // eslint-disable-line no-unused-vars
 import About from './About';
 import Swiper from 'swiper';
+import logo from '../images/sometrips.svg';
 
 class Home extends Component {
   constructor(props) {
@@ -52,6 +53,7 @@ class Home extends Component {
               speed: 400,
               spaceBetween: 50,
               slidesPerView: 'auto',
+              simulateTouch: false,
               loop: true,
               navigation: {
                 nextEl: '#next',
@@ -134,7 +136,7 @@ class Home extends Component {
         }
         return (
           <div className="swiper-slide w-70-ns w-100" key={i}>
-            <Link to={{pathname:"/sometrips/"+(i+1)+"/"+url}}>
+            <Link to={"/sometrips/"+(i+1)+"/"+url+'/'}>
               <div className="absolute w-100 h-100" style={bgStyle}></div>
             </Link>
             <div className="flex aic w-100 h-100 jcc relative z1 white f1 pn o-0">{place}</div>
@@ -170,10 +172,9 @@ class Home extends Component {
         <nav className="pt3">
           <div className="mw1280 center ph3">
             <div className="flex ph2-ns space-between aic">
-              <img src='/images/sometrips.svg' width='150' height='150' alt="some trips" />
+              <img src={logo} width='150' height='150' alt="some trips" />
               <div className="flex space-between aic ph2-ns">
                 <p className="f4 fw5 ph4 cp" onClick={this.openAbout.bind(this)}>About</p>
-                <i className="f2 material-icons db-ns dn cp">notes</i>
               </div>
             </div>
           </div>
@@ -182,12 +183,15 @@ class Home extends Component {
           <div className="flex aic mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center z4 pn">
             <div className="auto">
               <div className="flex ph2"><span className="f3 fw5">{year}</span><hr className="relative top5 w3 b--black mh3 dib"/></div>
-              <Link to={{pathname:"/sometrips/"+(this.state.current)+"/"+place}}>
+              <Link to={"/sometrips/"+(this.state.current)+"/"+place.toLowerCase()+'/'}>
                 <h1 className="f-headline lh-solid">{place}</h1>
               </Link>
               <div className="flex">
                 <div className="button flex jcc aic mh2 cp z4" id="prev">
                   <i className="material-icons flip">arrow_right_alt</i>
+                </div>
+                <div className="button bg-white flex jcc aic mh2 cp z4" id="prev">
+                  <i className="material-icons">apps</i>
                 </div>
                 <div className="button flex jcc aic mh2 cp z4" id="next">
                   <i className="material-icons">arrow_right_alt</i>

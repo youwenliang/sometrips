@@ -140,6 +140,10 @@ img {
   background-color: #f3f3f3;
 }
 
+.bg-white {
+  background-color: #ffffff !important;
+}
+
 .flip {
   transform: scaleX(-1);
 }
