@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {Helmet} from "react-helmet";
 import loadImage from 'image-promise';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import $ from 'jquery';
 import logo from '../images/sometrips-white.svg';
+import PropTypes from 'prop-types'
 // import mousewheel from 'jquery-mousewheel';
 // import {TweenMax} from "gsap/all";
 
@@ -62,6 +63,18 @@ class Page extends Component {
     };
     request.send();
   }
+
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
+  redirectToTarget = () => {
+    var $this = this;
+    $('.preloader-wrap').fadeIn(300,function(){
+      $this.context.router.history.push('/sometrips')
+    });
+  }
+
   render() {
     let title = "";
     let year = "";
@@ -87,10 +100,8 @@ class Page extends Component {
         </Helmet>
         <nav className="pt3 absolute z1 w-100">
           <div className="mw1280 center ph3">
-            <div className="flex ph2-ns aic">
-              <Link to="/sometrips">
-              <img src={logo} width='150' height='150' alt="some trips" />
-              </Link>
+            <div className="flex ph2-ns aic pn">
+              <img className="auto cp" src={logo} width='150' height='150' alt="some trips" onClick={this.redirectToTarget}/>
             </div>
           </div>
         </nav>
@@ -108,12 +119,10 @@ class Page extends Component {
           <nav className="pt3 h3">
             <div className="mw1280 center ph3">
               <div className="flex ph2-ns flex-end aic">
-                <Link to="/sometrips">
-                <div className="flex space-between aic ph2-ns">
+                <div className="flex space-between aic ph2-ns"  onClick={this.redirectToTarget}>
                   <p className="f4 fw5 ph4 cp db-ns dn" id="about">Home</p>
                   <i className="f2 material-icons cp">home</i>
                 </div>
-                </Link>
               </div>
             </div>
           </nav>

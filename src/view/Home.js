@@ -9,6 +9,9 @@ import About from './About';
 import Swiper from 'swiper';
 import logo from '../images/sometrips.svg';
 
+var mySwiper = null;
+var total_num = 0;
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -20,6 +23,9 @@ class Home extends Component {
     this.handler = this.handler.bind(this)
   }
   componentDidMount(){
+    console.log("mount");
+    document.body.classList.add('ds');
+    mySwiper = null;
     $(document).scrollTop(0);
     $('.photosets').scrollLeft(0);
 
@@ -40,36 +46,25 @@ class Home extends Component {
     }
     setHeight();
     $(window).on('resize orientationchange', setHeight);
+
     var $this = this;
+    $('#prev').click(function(){
+      mySwiper.slidePrev();
+      var i = mySwiper.activeIndex%total_num + 1;
+      $this.setState({current: i});
+    })
+    $('#next').click(function(){
+      mySwiper.slideNext();
+      var i = mySwiper.activeIndex%total_num + 1;
+      $this.setState({current: i});
+    })
+    
     var images  = [];
     loadImage(images)
     .then(function (allImgs) {
       console.log(allImgs.length, 'images loaded!', allImgs);
       setTimeout(function(){
-        $(document).ready(function(){
-        // var flag = false;
-        if($('.swiper-container').length !== 0) {
-          var mySwiper = new Swiper('.swiper-container', {
-              speed: 400,
-              spaceBetween: 50,
-              slidesPerView: 'auto',
-              simulateTouch: false,
-              navigation: {
-                nextEl: '#next',
-                prevEl: '#prev',
-              }
-          });
-          $('#prev').click(function(){
-            mySwiper.slidePrev();
-            var i = mySwiper.activeIndex%18 + 1;
-            $this.setState({current: i});
-          })
-          $('#next').click(function(){
-            mySwiper.slideNext();
-            var i = mySwiper.activeIndex%18 + 1;
-            $this.setState({current: i});
-          })
-        }
+        
         // $(window).mousewheel(function(event) {
         //   if(!flag) {
         //       if (event.originalEvent.wheelDelta >= 0) {
@@ -94,8 +89,8 @@ class Home extends Component {
         //        flag = false;
         //   }, 50));
         // });
-        });
-      },600);
+        
+      },0);
     })
     .catch(function (err) {
       console.error('One or more images have failed to load :(');
@@ -103,7 +98,7 @@ class Home extends Component {
       console.info('But these loaded fine:');
       console.info(err.loaded);
     });
-
+  
     var request = new XMLHttpRequest();
     request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=b5915b4e4a36d456caa767bdb9003cbc&user_id=129588168%40N02&format=json&nojsoncallback=1');
     request.setRequestHeader('Accept','application/json');
@@ -113,9 +108,34 @@ class Home extends Component {
         var albumData = JSON.parse(this.responseText);
         $this.setState({data: albumData.photosets.photoset});
         console.log($this.state.data);
+        total_num = $this.state.data.length;
       }
     };
     request.send();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("update");
+    $(document).ready(function(){
+        // var flag = false;
+        console.log("update ready");
+        $('.preloader-wrap').fadeOut(300);
+        document.body.classList.remove('ds');
+        if($('.swiper-container').length !== 0 && mySwiper === null) {
+              console.log('init swiper');
+              mySwiper = new Swiper('.swiper-container', {
+              speed: 400,
+              spaceBetween: 50,
+              slidesPerView: 'auto',
+              loop: true,
+              simulateTouch: false,
+              navigation: {
+                nextEl: '#next',
+                prevEl: '#prev',
+              }
+          });
+        }
+        });
   }
 
   albumList = () => {

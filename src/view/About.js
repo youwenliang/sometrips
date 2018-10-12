@@ -4,7 +4,7 @@ import FontAwesome from 'react-fontawesome';
 class About extends Component {
   render() {
     let display = "";
-    if(!this.props.display) display = " dn";
+    if(!this.props.display) display = " hide";
     return (
       <section id="about" className={"min-vh-100 absolute top-left w-100 z10" + display}>
         <nav className="pt3">

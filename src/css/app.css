@@ -15,6 +15,19 @@ body {
 
 #about {
   background: #fdfdfc;
+  transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+
+#about.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.auto {
+  pointer-events: auto !important;
+}
+.grid {
+  margin: 0 auto;
 }
 
 .dark {
