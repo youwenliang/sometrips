@@ -8,6 +8,7 @@ import dragscroll from 'dragscroll'; // eslint-disable-line no-unused-vars
 import About from './About';
 import Swiper from 'swiper';
 import logo from '../images/sometrips.svg';
+import PropTypes from 'prop-types'
 
 var mySwiper = null;
 var total_num = 0;
@@ -117,25 +118,64 @@ class Home extends Component {
   componentDidUpdate(prevProps, prevState) {
     console.log("update");
     $(document).ready(function(){
-        // var flag = false;
+        var left;
+        if($(window).width() >= 480) {
+          left = 'calc(50vw - 200px)'
+        } else {
+          left = 0;
+        }
+        $(window).resize(function(){
+          if($(window).width() >= 480) {
+            left = 'calc(50vw - 200px)'
+          } else {
+            left = 0;
+          }
+          $('.mask').css({
+            'width': $('.swiper-slide-active .absolute').width(),
+            'height': $('.swiper-slide-active .absolute').height(),
+            'top': '166px',
+            'left': left
+          });
+        })
         console.log("update ready");
         $('.preloader-wrap').fadeOut(300);
         document.body.classList.remove('ds');
-        if($('.swiper-container').length !== 0 && mySwiper === null) {
-              console.log('init swiper');
-              mySwiper = new Swiper('.swiper-container', {
-              speed: 400,
-              spaceBetween: 50,
-              slidesPerView: 'auto',
-              loop: true,
-              simulateTouch: false,
-              navigation: {
-                nextEl: '#next',
-                prevEl: '#prev',
-              }
-          });
-        }
+        if($('.swiper-container').length !== 0) {
+            if(mySwiper === null) {
+                console.log('init swiper');
+                mySwiper = new Swiper('.swiper-container', {
+                speed: 400,
+                spaceBetween: 50,
+                slidesPerView: 'auto',
+                loop: true,
+                simulateTouch: false,
+                navigation: {
+                  nextEl: '#next',
+                  prevEl: '#prev',
+                }
+              });
+            }
+            $('.mask').css({
+              'background-image': $('.swiper-slide-active .absolute').css('background-image'),
+              'width': $('.swiper-slide-active .absolute').width(),
+              'height': $('.swiper-slide-active .absolute').height(),
+              'top': '166px',
+              'left': left
+            });
+          }
         });
+  }
+
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
+  redirectToTarget = (a) => {
+    var $this = this;
+    $('.mask').addClass('active');
+    setTimeout(function(){
+      $this.context.router.history.push(a)
+    },800);
   }
 
   albumList = () => {
@@ -153,11 +193,10 @@ class Home extends Component {
           "left": 0,
           "opacity": .75
         }
+        var link = '/sometrips/'+(i+1)+"/"+url+'/';
         return (
-          <div className="swiper-slide w-70-ns w-100" key={i}>
-            <Link to={"/sometrips/"+(i+1)+"/"+url+'/'}>
-              <div className="absolute w-100 h-100" style={bgStyle}></div>
-            </Link>
+          <div className="swiper-slide w-70-ns w-100 cp" key={i}>
+            <div className="absolute w-100 h-100" style={bgStyle} onClick={() => this.redirectToTarget(link)}></div>
             <div className="flex aic w-100 h-100 jcc relative z1 white f1 pn o-0">{place}</div>
           </div>
         );
@@ -198,14 +237,15 @@ class Home extends Component {
             </div>
           </div>
         </nav>
-        <div id="album" className="relative">
+        <div className="mask absolute pn"></div>
+        <div id="album" className="relative bg-white">
           <div className="flex aic mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center z4 pn">
-            <div className="auto">
+            <div className="pn">
               <div className="flex ph2"><span className="f3 fw5">{year}</span><hr className="relative top5 w3 b--black mh3 dib"/></div>
               <Link to={"/sometrips/"+(this.state.current)+"/"+place.toLowerCase()+'/'}>
-                <h1 className="f-headline lh-solid">{place}</h1>
+                <h1 className="f-headline lh-solid auto">{place}</h1>
               </Link>
-              <div className="flex">
+              <div className="flex auto">
                 <div className="button flex jcc aic mh2 cp z4" id="prev">
                   <i className="material-icons flip">arrow_right_alt</i>
                 </div>

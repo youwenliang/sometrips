@@ -64,6 +64,15 @@ class Page extends Component {
     request.send();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log("update");
+    $(document).ready(function(){
+        console.log("update ready");
+        $('.preloader-wrap').fadeOut(300);
+        document.body.classList.remove('ds');
+    });
+  }
+
   static contextTypes = {
     router: PropTypes.object
   }
@@ -88,6 +97,7 @@ class Page extends Component {
       var bgStyle = {
         "backgroundImage": "url('"+cover_url+"')",
         "backgroundSize": "cover",
+        "backgroundPosition": "center center",
         "top": 0,
         "left": 0,
         "opacity": .75
