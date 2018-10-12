@@ -5,6 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import $ from 'jquery';
 import logo from '../images/sometrips-white.svg';
 import PropTypes from 'prop-types'
+import StackGrid from "react-stack-grid";
 // import mousewheel from 'jquery-mousewheel';
 // import {TweenMax} from "gsap/all";
 
@@ -15,6 +16,7 @@ class Page extends Component {
     const { match: { params } } = this.props;
     this.state = {
       data: null,
+      photos: null,
       id: params.id,
       number: params.number,
       flag: false
@@ -51,25 +53,41 @@ class Page extends Component {
     });
 
     var request = new XMLHttpRequest();
-    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=b5915b4e4a36d456caa767bdb9003cbc&user_id=129588168%40N02&format=json&nojsoncallback=1');
+    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=4fc60f8bc0ad10bf8c16c2be6b8bc2fe&user_id=129588168%40N02&format=json&nojsoncallback=1');
     request.setRequestHeader('Accept','application/json');
     
     var $this = this;
     request.onreadystatechange = function () {
       if (this.readyState === 4) {
         var albumData = JSON.parse(this.responseText);
+        var photoset_id = albumData.photosets.photoset[$this.state.number-1].id;
         $this.setState({data: albumData.photosets.photoset});
+
+        var request2 = new XMLHttpRequest();
+        request2.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=4fc60f8bc0ad10bf8c16c2be6b8bc2fe&photoset_id='+photoset_id+'&user_id=129588168%40N02&format=json&nojsoncallback=1');
+        request2.setRequestHeader('Accept','application/json');
+
+        request2.onreadystatechange = function () {
+          if (this.readyState === 4) {
+            var albumData = JSON.parse(this.responseText);
+            console.log(albumData);
+            $this.setState({photos: albumData.photoset.photo});
+            console.log($this.state.photos);
+          }
+        }
+        request2.send();
       }
     };
     request.send();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("update");
     $(document).ready(function(){
-        console.log("update ready");
-        $('.preloader-wrap').fadeOut(300);
-        document.body.classList.remove('ds');
+        $('.mask').addClass('hide');
+        setTimeout(function(){
+          $('.mask').removeClass('active');
+          document.body.classList.remove('ds');
+        }, 800);
     });
   }
 
@@ -93,6 +111,7 @@ class Page extends Component {
       year = title.split(' Trip ')[1];
       place = title.split(' Trip')[0];
       var data = this.state.data[this.state.number-1]
+      console.log(data);
       var cover_url = "https://farm"+data.farm+".staticflickr.com/"+data.server+"/"+data.primary+"_"+data.secret+"_h.jpg";
       var bgStyle = {
         "backgroundImage": "url('"+cover_url+"')",
@@ -103,10 +122,23 @@ class Page extends Component {
         "opacity": .75
       }
     }
+
+    let photos = [];
+    if(this.state.photos !== null) {
+      for(var i = 0; i < this.state.photos.length; i++) {
+        var data = this.state.photos[i];
+        var link = "https://farm"+data.farm+".staticflickr.com/"+data.server+"/"+data.id+"_"+data.secret+"_n.jpg";
+        var temp = (
+          <img src={link} width="150" height="auto"/>
+        )
+        photos.push(temp);
+      }
+    }
+
     return (
       <section className="bg-near-black">
         <Helmet>
-            <title>{this.state.id}</title>
+            <title>{title}</title>
         </Helmet>
         <nav className="pt3 absolute z1 w-100">
           <div className="mw1280 center ph3">
@@ -153,8 +185,15 @@ class Page extends Component {
                   </div>
                 </div>
               </div>
-              <div className="fl w-100 w-two-thirds-l pt3 pl5-l ph0">
-                <div className="photoList bg-near-white w-100 pb6"></div>
+              <div className="fl w-100 w-two-thirds-l pt3 pl5-l ph0 overflow-hidden">
+                <div className="photoList pb6">
+                  <StackGrid
+                    columnWidth={160}
+                    monitorImagesLoaded={true}
+                  >
+                    {photos}
+                  </StackGrid>
+                </div>
               </div>
             </div>
           </div>

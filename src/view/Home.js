@@ -24,7 +24,6 @@ class Home extends Component {
     this.handler = this.handler.bind(this)
   }
   componentDidMount(){
-    console.log("mount");
     document.body.classList.add('ds');
     mySwiper = null;
     $(document).scrollTop(0);
@@ -108,7 +107,6 @@ class Home extends Component {
       if (this.readyState === 4) {
         var albumData = JSON.parse(this.responseText);
         $this.setState({data: albumData.photosets.photoset});
-        console.log($this.state.data);
         total_num = $this.state.data.length;
       }
     };
@@ -116,7 +114,7 @@ class Home extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("update");
+    $('.mask').removeClass('hide');
     $(document).ready(function(){
         var left;
         if($(window).width() >= 480) {
@@ -137,12 +135,10 @@ class Home extends Component {
             'left': left
           });
         })
-        console.log("update ready");
         $('.preloader-wrap').fadeOut(300);
         document.body.classList.remove('ds');
         if($('.swiper-container').length !== 0) {
             if(mySwiper === null) {
-                console.log('init swiper');
                 mySwiper = new Swiper('.swiper-container', {
                 speed: 400,
                 spaceBetween: 50,
@@ -170,12 +166,19 @@ class Home extends Component {
     router: PropTypes.object
   }
 
-  redirectToTarget = (a) => {
+  redirectToTarget = (e,a) => {
+    var p = $(e.target.parentElement);
     var $this = this;
-    $('.mask').addClass('active');
-    setTimeout(function(){
-      $this.context.router.history.push(a)
-    },800);
+    if(p.hasClass('swiper-slide-active')) {
+      $('.mask').addClass('active');
+      setTimeout(function(){
+        $this.context.router.history.push(a)
+      },800);
+    } else {
+      mySwiper.slideNext();
+      var i = mySwiper.activeIndex%total_num + 1;
+      $this.setState({current: i});
+    }
   }
 
   albumList = () => {
@@ -196,7 +199,7 @@ class Home extends Component {
         var link = '/sometrips/'+(i+1)+"/"+url+'/';
         return (
           <div className="swiper-slide w-70-ns w-100 cp" key={i}>
-            <div className="absolute w-100 h-100" style={bgStyle} onClick={() => this.redirectToTarget(link)}></div>
+            <div className="absolute w-100 h-100" style={bgStyle} onClick={(e) => this.redirectToTarget(e,link)}></div>
             <div className="flex aic w-100 h-100 jcc relative z1 white f1 pn o-0">{place}</div>
           </div>
         );
@@ -237,7 +240,6 @@ class Home extends Component {
             </div>
           </div>
         </nav>
-        <div className="mask absolute pn"></div>
         <div id="album" className="relative bg-white">
           <div className="flex aic mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center z4 pn">
             <div className="pn">

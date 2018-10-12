@@ -28,6 +28,7 @@ class App extends Component {
 		  <div className="loader"><div className="trackbar"><div className="loadbar"></div></div></div>
 		  <div id="logo"></div>
 		  </div>
+        <div className="mask absolute pn"></div>
         <Main/>
       </div>
     );
