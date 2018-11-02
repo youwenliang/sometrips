@@ -19,7 +19,9 @@ class Page extends Component {
       photos: null,
       id: params.id,
       number: params.number,
-      flag: false
+      flag: false,
+      data: null,
+      description: null
     };
   }
 
@@ -61,7 +63,8 @@ class Page extends Component {
       if (this.readyState === 4) {
         var albumData = JSON.parse(this.responseText);
         var photoset_id = albumData.photosets.photoset[$this.state.number-1].id;
-        $this.setState({data: albumData.photosets.photoset});
+        console.log(albumData.photosets);
+        $this.setState({data: albumData.photosets.photoset, date: albumData.photosets.photoset[$this.state.number-1].description._content.split('@')[0], description: albumData.photosets.photoset[$this.state.number-1].description._content.split('@')[1]});
 
         var request2 = new XMLHttpRequest();
         request2.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=4fc60f8bc0ad10bf8c16c2be6b8bc2fe&photoset_id='+photoset_id+'&user_id=129588168%40N02&format=json&nojsoncallback=1');
@@ -70,9 +73,9 @@ class Page extends Component {
         request2.onreadystatechange = function () {
           if (this.readyState === 4) {
             var albumData = JSON.parse(this.responseText);
-            console.log(albumData);
             $this.setState({photos: albumData.photoset.photo});
             console.log($this.state.photos);
+            console.log("!");
           }
         }
         request2.send();
@@ -172,9 +175,10 @@ class Page extends Component {
             <div className="cf ph2-ns">
               <div className="fl w-100 w-third-l">
                 <h2 className="fw7">{title}</h2>
-                <h3 className="fw5 muted">2015.04.15 - 04.24</h3>
+                <h3 className="fw5 muted">{this.state.date}</h3>
                 <hr className="o-10 mv4"/>
-                <p className="lh-copy dark">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolor
+                <p className="lh-copy dark">
+                  {this.state.description}
                 </p>
                 <div className="flex mv4">
                   <div className="button flex jcc aic mh2 cp" id="link">
