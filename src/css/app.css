@@ -125,6 +125,14 @@ img {
   overflow-y: scroll;
 }
 
+.photoList span {
+  pointer-events: none;
+}
+
+.photoList img {
+  pointer-events: auto;
+}
+
 .ds {
 	overflow-y: hidden;
 }

@@ -6,6 +6,7 @@ import $ from 'jquery';
 import logo from '../images/sometrips-white.svg';
 import PropTypes from 'prop-types'
 import StackGrid from "react-stack-grid";
+import Modal from 'react-responsive-modal';
 // import mousewheel from 'jquery-mousewheel';
 // import {TweenMax} from "gsap/all";
 
@@ -21,9 +22,20 @@ class Page extends Component {
       number: params.number,
       flag: false,
       data: null,
-      description: null
+      description: null,
+      url: null,
+      open: false,
+      current: null
     };
   }
+
+  onOpenModal = (l) => {
+    this.setState({ open: true, current: l });
+  };
+
+  onCloseModal = () => {
+    this.setState({ open: false });
+  };
 
   componentDidMount(){
     $(document).scrollTop(0);
@@ -64,7 +76,7 @@ class Page extends Component {
         var albumData = JSON.parse(this.responseText);
         var photoset_id = albumData.photosets.photoset[$this.state.number-1].id;
         console.log(albumData.photosets);
-        $this.setState({data: albumData.photosets.photoset, date: albumData.photosets.photoset[$this.state.number-1].description._content.split('@')[0], description: albumData.photosets.photoset[$this.state.number-1].description._content.split('@')[1]});
+        $this.setState({url: albumData.photosets.photoset[$this.state.number-1].id,data: albumData.photosets.photoset, date: albumData.photosets.photoset[$this.state.number-1].description._content.split('@')[0], description: albumData.photosets.photoset[$this.state.number-1].description._content.split('@')[1]});
 
         var request2 = new XMLHttpRequest();
         request2.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=4fc60f8bc0ad10bf8c16c2be6b8bc2fe&photoset_id='+photoset_id+'&user_id=129588168%40N02&format=json&nojsoncallback=1');
@@ -106,6 +118,7 @@ class Page extends Component {
   }
 
   render() {
+    const { open } = this.state;
     let title = "";
     let year = "";
     let place = "";
@@ -132,7 +145,7 @@ class Page extends Component {
         var data = this.state.photos[i];
         var link = "https://farm"+data.farm+".staticflickr.com/"+data.server+"/"+data.id+"_"+data.secret+"_n.jpg";
         var temp = (
-          <img src={link} width="150" height="auto"/>
+          <img src={link} width="150" height="auto" className="cp" onClick={(e) => this.onOpenModal(e.target.src.replace('_n','_h'))}/>
         )
         photos.push(temp);
       }
@@ -181,9 +194,11 @@ class Page extends Component {
                   {this.state.description}
                 </p>
                 <div className="flex mv4">
+                  <a href={"https://www.flickr.com/photos/youwenliang/sets/"+this.state.url} target="_blank">
                   <div className="button flex jcc aic mh2 cp" id="link">
                     <i className="material-icons flip">link</i>
                   </div>
+                  </a>
                   <div className="button flex jcc aic mh2 cp" id="share">
                     <i className="material-icons">share</i>
                   </div>
@@ -202,6 +217,9 @@ class Page extends Component {
             </div>
           </div>
         </div>
+        <Modal open={open} onClose={this.onCloseModal} center>
+          <img src={this.state.current}/>
+        </Modal>
       </section>
     );
   }
