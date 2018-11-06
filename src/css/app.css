@@ -133,6 +133,15 @@ img {
   pointer-events: auto;
 }
 
+.load {
+  opacity: 0;
+  transition: all .2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+.load.show {
+  opacity: 0.75; 
+  transition: all .2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+
 .ds {
 	overflow-y: hidden;
 }
@@ -397,7 +406,14 @@ img {
 
 .styles_modal__gNwvD {
   max-height: 100%;
+  max-width: 80vw;
   height: auto;
+  opacity: 0;
+  transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+
+.styles_modal__gNwvD.show {
+  opacity: 1;
 }
 
 .styles_modal__gNwvD img {

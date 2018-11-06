@@ -5,8 +5,12 @@ import { Link, Redirect } from 'react-router-dom';
 import $ from 'jquery';
 import logo from '../images/sometrips-white.svg';
 import PropTypes from 'prop-types'
-import StackGrid from "react-stack-grid";
 import Modal from 'react-responsive-modal';
+
+import StackGrid, { transitions } from "react-stack-grid";
+const { scaleDown } = transitions;
+
+
 // import mousewheel from 'jquery-mousewheel';
 // import {TweenMax} from "gsap/all";
 
@@ -30,7 +34,12 @@ class Page extends Component {
   }
 
   onOpenModal = (l) => {
+    var img = new Image();
     this.setState({ open: true, current: l });
+    img.onload = function () {
+      $('.styles_modal__gNwvD').addClass('show');
+    }
+    img.src = l;
   };
 
   onCloseModal = () => {
@@ -86,6 +95,7 @@ class Page extends Component {
           if (this.readyState === 4) {
             var albumData = JSON.parse(this.responseText);
             $this.setState({photos: albumData.photoset.photo});
+            console.log(albumData.photoset);
             console.log($this.state.photos);
             console.log("!");
           }
@@ -143,9 +153,9 @@ class Page extends Component {
     if(this.state.photos !== null) {
       for(var i = 0; i < this.state.photos.length; i++) {
         var data = this.state.photos[i];
-        var link = "https://farm"+data.farm+".staticflickr.com/"+data.server+"/"+data.id+"_"+data.secret+"_n.jpg";
+        var link = "https://farm"+data.farm+".staticflickr.com/"+data.server+"/"+data.id+"_"+data.secret+"_m.jpg";
         var temp = (
-          <img src={link} width="150" height="auto" className="cp" onClick={(e) => this.onOpenModal(e.target.src.replace('_n','_h'))}/>
+          <img src={link} width="150" height="auto" className="cp" onClick={(e) => this.onOpenModal(e.target.src.replace('_m','_h'))}/>
         )
         photos.push(temp);
       }
@@ -163,6 +173,7 @@ class Page extends Component {
             </div>
           </div>
         </nav>
+        <div className="load fixed bg-black w-100 h-100 z10 pn"></div>
         <div id="page-cover" className="tc flex jcc aic relative">
           <div className="absolute w-100 h-100" style={bgStyle}></div>
           <div className="mw8 center ph3 pv6-l pv4 white z1">
@@ -209,6 +220,11 @@ class Page extends Component {
                   <StackGrid
                     columnWidth={160}
                     monitorImagesLoaded={true}
+                    appear={scaleDown.appear}
+                    appeared={scaleDown.appeared}
+                    enter={scaleDown.enter}
+                    entered={scaleDown.entered}
+                    leaved={scaleDown.leaved}
                   >
                     {photos}
                   </StackGrid>
