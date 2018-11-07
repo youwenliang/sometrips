@@ -34,9 +34,10 @@ class Page extends Component {
   }
 
   onOpenModal = (l) => {
-    var img = new Image();
     this.setState({ open: true, current: l });
+    var img = new Image();
     img.onload = function () {
+      console.log("????");
       $('.styles_modal__gNwvD').addClass('show');
     }
     img.src = l;
@@ -153,9 +154,9 @@ class Page extends Component {
     if(this.state.photos !== null) {
       for(var i = 0; i < this.state.photos.length; i++) {
         var data = this.state.photos[i];
-        var link = "https://farm"+data.farm+".staticflickr.com/"+data.server+"/"+data.id+"_"+data.secret+"_m.jpg";
+        var link = "https://farm"+data.farm+".staticflickr.com/"+data.server+"/"+data.id+"_"+data.secret+"_n.jpg";
         var temp = (
-          <img src={link} width="150" height="auto" className="cp" onClick={(e) => this.onOpenModal(e.target.src.replace('_m','_h'))}/>
+          <img src={link} width="240" height="auto" className="cp" onClick={(e) => this.onOpenModal(e.target.src.replace('_n','_h'))}/>
         )
         photos.push(temp);
       }
@@ -168,7 +169,7 @@ class Page extends Component {
         </Helmet>
         <nav className="pt3 absolute z1 w-100">
           <div className="mw1280 center ph3">
-            <div className="flex ph2-ns aic pn">
+            <div className="flex ph2 aic pn">
               <img className="auto cp" src={logo} width='150' height='150' alt="some trips" onClick={this.redirectToTarget}/>
             </div>
           </div>
@@ -178,16 +179,16 @@ class Page extends Component {
           <div className="absolute w-100 h-100" style={bgStyle}></div>
           <div className="mw8 center ph3 pv6-l pv4 white z1">
             <div className="cf ph2-ns">
-              <h1 className="f-headline lh-solid mv4">{place}</h1>
+              <h1 className="f-headline-ns f1 lh-solid mv4">{place}</h1>
               <hr className="w2 f3 b--white" />
               <p className="f3 fw5">{year}</p>
             </div>
           </div>
         </div>
-        <div id="page-content" className="bg-white pt4">
+        <div id="page-content" className="bg-white pt4-ns pt2">
           <nav className="pt3 h3">
             <div className="mw1280 center ph3">
-              <div className="flex ph2-ns flex-end aic">
+              <div className="flex ph2 flex-end aic">
                 <div className="flex space-between aic ph2-ns"  onClick={this.redirectToTarget}>
                   <p className="f4 fw5 ph4 cp db-ns dn" id="about">Home</p>
                   <i className="f2 material-icons cp">home</i>
@@ -195,9 +196,9 @@ class Page extends Component {
               </div>
             </div>
           </nav>
-          <div className="mw1280 center pl5-l ph3 pt4">
+          <div className="mw1280 center pl5-l ph3 pt4-ns pt2">
             <div className="cf ph2-ns">
-              <div className="fl w-100 w-third-l">
+              <div className="fl w-100 w-third-l ph3 ph0-ns">
                 <h2 className="fw7">{title}</h2>
                 <h3 className="fw5 muted">{this.state.date}</h3>
                 <hr className="o-10 mv4"/>
@@ -215,10 +216,10 @@ class Page extends Component {
                   </div>
                 </div>
               </div>
-              <div className="fl w-100 w-two-thirds-l pt3 pl5-l ph0 overflow-hidden">
+              <div className="fl w-100 w-two-thirds-l pv4 bg-near-white ph0 overflow-hidden">
                 <div className="photoList pb6">
                   <StackGrid
-                    columnWidth={160}
+                    columnWidth={240}
                     monitorImagesLoaded={true}
                     appear={scaleDown.appear}
                     appeared={scaleDown.appeared}

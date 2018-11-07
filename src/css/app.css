@@ -122,6 +122,8 @@ img {
 .photoList {
   height: calc(100vh - 9rem);
   width: calc(100% + 40px);
+  position: relative;
+  left: -20px;
   overflow-y: scroll;
 }
 

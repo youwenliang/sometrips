@@ -135,7 +135,6 @@ class Home extends Component {
             'left': left
           });
         })
-        $('.preloader-wrap').fadeOut(300);
         document.body.classList.remove('ds');
         if($('.swiper-container').length !== 0) {
             if(mySwiper === null) {
@@ -197,6 +196,16 @@ class Home extends Component {
           "opacity": .75
         }
         var link = '/sometrips/'+(i+1)+"/"+url+'/';
+
+        if(i == 0) {
+          var img = new Image();
+          img.onload = function () {
+            setTimeout(function(){
+              $('.preloader-wrap').fadeOut(300);
+            }, 700);
+          }
+          img.src = cover_url;
+        }
         return (
           <div className="swiper-slide w-70-ns w-100 cp" key={i}>
             <div className="absolute w-100 h-100" style={bgStyle} onClick={(e) => this.redirectToTarget(e,link)}></div>
@@ -245,7 +254,7 @@ class Home extends Component {
             <div className="pn">
               <div className="flex ph2"><span className="f3 fw5">{year}</span><hr className="relative top5 w3 b--black mh3 dib"/></div>
               <Link to={"/sometrips/"+(this.state.current)+"/"+place.toLowerCase()+'/'}>
-                <h1 className="f-headline lh-solid auto">{place}</h1>
+                <h1 className="f-headline-ns f1 lh-solid auto">{place}</h1>
               </Link>
               <div className="flex auto">
                 <div className="button flex jcc aic mh2 cp z4" id="prev">
