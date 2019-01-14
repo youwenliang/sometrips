@@ -29,7 +29,8 @@ class Page extends Component {
       description: null,
       url: null,
       open: false,
-      current: null
+      current: null,
+      mobile: false
     };
   }
 
@@ -49,6 +50,7 @@ class Page extends Component {
 
   componentDidMount(){
     $(document).scrollTop(0);
+    if($(window).width() <= 590) this.setState({mobile: true});
     function setHeight() {
       var windowHeight = $(window).height(),
         $block = $('#page-cover');
@@ -155,12 +157,16 @@ class Page extends Component {
       for(var i = 0; i < this.state.photos.length; i++) {
         var data = this.state.photos[i];
         var link = "https://farm"+data.farm+".staticflickr.com/"+data.server+"/"+data.id+"_"+data.secret+"_n.jpg";
-        var temp = (
+        var temp = this.state.mobile ? (
+          <img src={link.replace('_n','_z')} width="100%" height="auto" className="cp" onClick={(e) => this.onOpenModal(e.target.src.replace('_n','_z'))}/>
+        ): (
           <img src={link} width="240" height="auto" className="cp" onClick={(e) => this.onOpenModal(e.target.src.replace('_n','_h'))}/>
         )
         photos.push(temp);
       }
     }
+
+    var thisW = this.state.mobile ? "100%" : "240";
 
     return (
       <section className="bg-near-black">
@@ -216,10 +222,10 @@ class Page extends Component {
                   </div>
                 </div>
               </div>
-              <div className="fl w-100 w-two-thirds-l pv4 bg-near-white ph0 overflow-hidden">
+              <div className="fl w-100 w-two-thirds-l pv4-ns pv0 bg-near-white ph0 overflow-hidden">
                 <div className="photoList pb6">
                   <StackGrid
-                    columnWidth={240}
+                    columnWidth={thisW}
                     monitorImagesLoaded={true}
                     appear={scaleDown.appear}
                     appeared={scaleDown.appeared}

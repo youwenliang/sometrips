@@ -197,7 +197,7 @@ class Home extends Component {
         }
         var link = '/sometrips/'+(i+1)+"/"+url+'/';
 
-        if(i == 0) {
+        if(i === 0) {
           var img = new Image();
           img.onload = function () {
             setTimeout(function(){

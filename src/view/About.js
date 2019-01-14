@@ -27,7 +27,7 @@ class About extends Component {
               <div className="fl w-100 w-50-l ph2">
                 <h2 className="fw7 f2 mt0">About Sometrips</h2>
                 <p className="lh-copy dark">
-                  Sometrips is a website with my collection of places I traveled from 2014 to 2018 and the photos I took during the trips. All photos can be seen in my Flickr albums here: <a href="https://www.flickr.com/photos/youwenliang/albums" target="blank">https://www.flickr.com/photos/youwenliang/albums</a>
+                  Sometrips is a website with my collection of places I traveled from 2014 to 2019 and the photos I took during the trips. All photos can be seen in my Flickr albums here: <a href="https://www.flickr.com/photos/youwenliang/albums" target="blank">https://www.flickr.com/photos/youwenliang/albums</a>
                 </p>
                 <div className="flex mv4">
                   <a href="https://github.com/youwenliang/sometrips" target="_blank">
