@@ -4,16 +4,20 @@ import loadImage from 'image-promise';
 import { Link, Redirect } from 'react-router-dom';
 import $ from 'jquery';
 import logo from '../images/sometrips-white.svg';
+import loading from '../images/spinner.svg';
 import PropTypes from 'prop-types'
 import Modal from 'react-responsive-modal';
 
 import StackGrid, { transitions } from "react-stack-grid";
+import Masonry from 'react-masonry-component';
+
 const { scaleDown } = transitions;
 
+const imagesLoadedOptions = { background: '.my-bg-image-el' }
 
 // import mousewheel from 'jquery-mousewheel';
 // import {TweenMax} from "gsap/all";
-
+var countingPhotos = 0;
 
 class Page extends Component {
   constructor(props) {
@@ -30,7 +34,9 @@ class Page extends Component {
       url: null,
       open: false,
       current: null,
-      mobile: false
+      mobile: false,
+      loaded: false,
+      done: false
     };
   }
 
@@ -49,9 +55,13 @@ class Page extends Component {
   };
 
   componentDidMount(){
+    var $this = this;
     $(document).scrollTop(0);
+    document.body.classList.add('ds');
     if($(window).width() <= 590) this.setState({mobile: true});
     function setHeight() {
+      if($(window).width() <= 590) $this.setState({mobile: true});
+      else $this.setState({mobile: false});
       var windowHeight = $(window).height(),
         $block = $('#page-cover');
         if(windowHeight > 550) { // 550px is your css min-height for this block
@@ -97,7 +107,7 @@ class Page extends Component {
         request2.onreadystatechange = function () {
           if (this.readyState === 4) {
             var albumData = JSON.parse(this.responseText);
-            $this.setState({photos: albumData.photoset.photo});
+            $this.setState({photos: albumData.photoset.photo, loaded: true});
             console.log(albumData.photoset);
             console.log($this.state.photos);
             console.log("!");
@@ -114,7 +124,6 @@ class Page extends Component {
         $('.mask').addClass('hide');
         setTimeout(function(){
           $('.mask').removeClass('active');
-          document.body.classList.remove('ds');
         }, 800);
     });
   }
@@ -128,6 +137,12 @@ class Page extends Component {
     $('.preloader-wrap').fadeIn(300,function(){
       $this.context.router.history.push('/sometrips')
     });
+  }
+
+  layoutLoaded = () => {
+    document.body.classList.remove('ds');
+    $('#loadingPhotos').addClass('dn');
+    console.log("done!");
   }
 
   render() {
@@ -152,21 +167,57 @@ class Page extends Component {
       }
     }
 
+    function loadData(url) {
+      var xhttp = new XMLHttpRequest();
+      var orientation = null
+      xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+           var photoData = JSON.parse(xhttp.responseText);
+           if(photoData.sizes.size[2].width > photoData.sizes.size[2].height) orientation = "portrait";
+           else orientation = "landscape";
+        }
+      };
+      xhttp.open("GET", url, true);
+      xhttp.send();
+    }
+
     let photos = [];
     if(this.state.photos !== null) {
       for(var i = 0; i < this.state.photos.length; i++) {
         var data = this.state.photos[i];
+        var orientation = loadData('https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=a7a564b411d3c9fb8341e8a74c3da9b8&photo_id='+data.id+'&format=json&nojsoncallback=1');
         var link = "https://farm"+data.farm+".staticflickr.com/"+data.server+"/"+data.id+"_"+data.secret+"_n.jpg";
+        console.log(data.rotation);
         var temp = this.state.mobile ? (
-          <img src={link.replace('_n','_z')} width="100%" height="auto" className="cp" onClick={(e) => this.onOpenModal(e.target.src.replace('_n','_z'))}/>
+          <div className={"photo mh1-ns mb2 l0 mobile "+orientation}>
+            <img src={link.replace('_n','_z')} width="100%" height="auto" className="cp" onClick={(e) => this.onOpenModal(e.target.src.replace('_n','_z'))}/>
+          </div>
         ): (
-          <img src={link} width="240" height="auto" className="cp" onClick={(e) => this.onOpenModal(e.target.src.replace('_n','_h'))}/>
+          <div className={"photo mh1-ns mb2 l0 "+orientation}>
+            <img src={link} width="240" height="auto" className="cp" onClick={(e) => this.onOpenModal(e.target.src.replace('_n','_h'))}/>
+          </div>
         )
         photos.push(temp);
       }
     }
 
-    var thisW = this.state.mobile ? "100%" : "240";
+    var masonryOptions = {
+        transitionDuration: '0.2s',
+        isFitWidth: this.state.mobile ? false : true
+    };
+
+    var stack = (
+      <Masonry
+          className={'my-gallery-class'} // default ''
+          options={masonryOptions} // default {}
+          disableImagesLoaded={false} // default false
+          updateOnEachImageLoad={false} // default false and works only if disableImagesLoaded is false
+          imagesLoadedOptions={imagesLoadedOptions} // default {}
+          onImagesLoaded={this.layoutLoaded}
+      >
+          {photos}
+      </Masonry>
+    )
 
     return (
       <section className="bg-near-black">
@@ -188,6 +239,7 @@ class Page extends Component {
               <h1 className="f-headline-ns f1 lh-solid mv4">{place}</h1>
               <hr className="w2 f3 b--white" />
               <p className="f3 fw5">{year}</p>
+              <img id="loadingPhotos" src={loading} width="60"/>
             </div>
           </div>
         </div>
@@ -222,19 +274,9 @@ class Page extends Component {
                   </div>
                 </div>
               </div>
-              <div className="fl w-100 w-two-thirds-l pv4-ns pv0 bg-near-white ph0 overflow-hidden">
+              <div className="fl w-100 w-two-thirds-l pv3-ns pv0 bg-near-white ph0 overflow-hidden">
                 <div className="photoList pb6">
-                  <StackGrid
-                    columnWidth={thisW}
-                    monitorImagesLoaded={true}
-                    appear={scaleDown.appear}
-                    appeared={scaleDown.appeared}
-                    enter={scaleDown.enter}
-                    entered={scaleDown.entered}
-                    leaved={scaleDown.leaved}
-                  >
-                    {photos}
-                  </StackGrid>
+                  {stack}
                 </div>
               </div>
             </div>

@@ -167,8 +167,9 @@ class Home extends Component {
 
   redirectToTarget = (e,a) => {
     var p = $(e.target.parentElement);
+    var c = $(e.target);
     var $this = this;
-    if(p.hasClass('swiper-slide-active')) {
+    if(p.hasClass('swiper-slide-active') || c.hasClass('f-headline-ns')) {
       $('.mask').addClass('active');
       setTimeout(function(){
         $this.context.router.history.push(a)
@@ -179,7 +180,6 @@ class Home extends Component {
       $this.setState({current: i});
     }
   }
-
   albumList = () => {
     if(this.state.data !== null ) {
       return (<div className="swiper-container h-100 z2 photosets"><div className="swiper-wrapper h-100">{this.state.data.map((a, i) => { 
@@ -234,6 +234,7 @@ class Home extends Component {
       year = this.state.data[this.state.current-1].title._content.split(' Trip ')[1];
       place = this.state.data[this.state.current-1].title._content.split(' Trip ')[0];
     }
+    var link = "/sometrips/"+(this.state.current)+"/"+place.toLowerCase()+"/"
     return (
       <section id="cover" className="min-vh-100">
         <Helmet>
@@ -253,9 +254,7 @@ class Home extends Component {
           <div className="flex aic mw8 center ph5-ns ph3 absolute h-100 w-100 absolute-center z4 pn">
             <div className="pn">
               <div className="flex ph2"><span className="f3 fw5">{year}</span><hr className="relative top5 w3 b--black mh3 dib"/></div>
-              <Link to={"/sometrips/"+(this.state.current)+"/"+place.toLowerCase()+'/'}>
-                <h1 className="f-headline-ns f1 lh-solid auto">{place}</h1>
-              </Link>
+              <h1 className="f-headline-ns f1 lh-solid auto cp" onClick={(e) => this.redirectToTarget(e,link)}>{place}</h1>
               <div className="flex auto">
                 <div className="button flex jcc aic mh2 cp z4" id="prev">
                   <i className="material-icons flip">arrow_right_alt</i>

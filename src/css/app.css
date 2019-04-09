@@ -121,9 +121,12 @@ img {
 }
 .photoList {
   height: calc(100vh - 12rem);
-  width: calc(100% + 40px);
+  width: 100%;
   position: relative;
-  left: -20px;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  text-align: center;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; /* smooth scroll on mobile */
 }
@@ -432,3 +435,41 @@ img {
   border-radius: 0 0 0 28px;
 }
 
+.styles_overlay__CLSq-:after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 60px;
+  background: url('images/spinner.svg');
+  position: absolute;
+  z-index: -1;
+}
+
+#loadingPhotos {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 10%;
+}
+
+.my-gallery-class {
+  margin: auto;
+  padding: 0;
+}
+
+.photo {
+  background: #cccccc;
+  display: block;
+  width: 240px;
+  height: 158.25px;
+}
+
+.photo.mobile {
+  width: calc(100vw - 32px);
+  height: calc((100vw - 32px) * 0.66);
+}
+
+.l0 {
+  left: 0;
+}
